@@ -27,5 +27,5 @@ jobs:
         uses: dagger/dagger-for-github@v2
         # See all options at https://github.com/dagger/dagger-for-github
         with:
-          workdir: pkg/universe.dagger.io/examples/todoapp
+          workdir: todoapp
           args: do deploy
