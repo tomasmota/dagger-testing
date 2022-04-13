@@ -30,4 +30,4 @@ jobs:
           workdir: todoapp
           args: do deploy
       - name: 'Print App Url'
-        run: 'echo https://${{env.API_KEY}}.netlify.app'
+        run: 'echo https://${{env.APP_NAME}}.netlify.app'
