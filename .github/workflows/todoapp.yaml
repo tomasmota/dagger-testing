@@ -29,8 +29,5 @@ jobs:
         with:
           workdir: todoapp
           args: do deploy
-      - name: 'Get App URL'
-        uses: voorhoede/get-netlify-url@v2
-        id: get-netlify-url      
       - name: 'Print App Url'
-        run: 'echo ${{ steps.get-netlify-url.outputs.url }}'
+        run: 'echo https://${{env.API_KEY}}.netlify.app'
