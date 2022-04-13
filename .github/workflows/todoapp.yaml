@@ -29,8 +29,6 @@ jobs:
         with:
           workdir: todoapp
           args: do deploy
-  url:
-    runs-on: ubuntu-latest
-    steps:
       - name: Print App Url
         run: echo "App Url"
+        
