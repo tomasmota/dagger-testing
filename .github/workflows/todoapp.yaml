@@ -23,6 +23,6 @@ jobs:
         # See all options at https://github.com/dagger/dagger-for-github
         with:
           workdir: todoapp
-          args: do deploy
+          cmds: do deploy
       - name: 'Print App Url'
         run: 'echo https://${{env.APP_NAME}}.netlify.app'
