@@ -28,15 +28,15 @@ dagger.#Plan & {
 			path: "bla/hello.txt"
 			contents: "hello, tom!"
 		}
-		// build: {
-		// 	run: bash.#Run & {
-		// 		// source: client.filesystem."./".read.contents
-		// 		path: "bla"
-		// 		workdir: "/src"
-		// 		script: contents: #"""
-		// 			dotnet test
-		// 			"""#
-		// 	}
-		// }
+		run: bash.#Run & {
+			input: _dockerCLI.output
+			mounts: "source": {
+				dest:     "/"
+				contents: write.output
+			}
+			script: contents: #"""
+				echo 'hello world'
+				"""#
+		}
 	}
 }
