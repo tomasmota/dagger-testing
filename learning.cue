@@ -4,6 +4,7 @@ import (
 	"dagger.io/dagger"
 	"dagger.io/dagger/core"
 	"universe.dagger.io/alpine"
+	"universe.dagger.io/bash"
 )
 
 dagger.#Plan & {
