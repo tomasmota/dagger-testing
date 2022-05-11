@@ -3,7 +3,7 @@ name: todoapp
 on:
   push:
     branches:
-      - main
+      - '**'
 
 env:
   APP_NAME: todoapp-dagger-tomas
