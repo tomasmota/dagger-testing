@@ -26,7 +26,7 @@ jobs:
           cmds: do deploy
       - name: 'Print App Url'
         run: 'echo https://${{env.APP_NAME}}.netlify.app'
-  todoapp:
+  samplewrite:
     runs-on: ubuntu-latest
     steps:
       - name: Clone repository
