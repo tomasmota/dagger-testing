@@ -12,7 +12,7 @@ env:
   DAGGER_LOG_FORMAT: plain
 
 jobs:
-  dagger:
+  todoapp:
     runs-on: ubuntu-latest
     steps:
       - name: Clone repository
@@ -26,3 +26,16 @@ jobs:
           cmds: do deploy
       - name: 'Print App Url'
         run: 'echo https://${{env.APP_NAME}}.netlify.app'
+  todoapp:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Clone repository
+        uses: actions/checkout@v2
+
+      - name: Deploy to Netlify
+        uses: dagger/dagger-for-github@v2
+        with:
+          workdir: samples
+          cmds: do write
+      - name: 'Read'
+        run: 'cat bla/hello.txt'

@@ -27,7 +27,7 @@ dagger.#Plan & {
 		write: core.#WriteFile & {
 			input: mkdir.output
 			path: "bla/hello.txt"
-			contents: "hello, tom!"
+			contents: "hello, dagger!"
 		}
 		run: bash.#Run & {
 			input: _dockerCLI.output
