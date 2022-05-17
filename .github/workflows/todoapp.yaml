@@ -38,4 +38,4 @@ jobs:
           workdir: samples
           cmds: do write
       - name: 'Read'
-        run: 'ls -la samples/bla/hello.txt'
+        run: 'cat samples/bla/hello.txt'
