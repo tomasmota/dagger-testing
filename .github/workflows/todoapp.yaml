@@ -24,18 +24,17 @@ jobs:
         with:
           workdir: todoapp
           cmds: do deploy
-      - name: 'Print App Url'
+      - name: Print App Url
         run: 'echo https://${{env.APP_NAME}}.netlify.app'
   samplewrite:
     runs-on: ubuntu-latest
     steps:
       - name: Clone repository
         uses: actions/checkout@v2
-
-      - name: Deploy to Netlify
+      - name: Write File
         uses: dagger/dagger-for-github@v2
         with:
           workdir: samples
           cmds: do write
-      - name: 'Read'
+      - name: Read File
         run: 'cat samples/bla/hello.txt'
