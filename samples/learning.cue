@@ -29,6 +29,10 @@ dagger.#Plan & {
 			path: "bla/hello.txt"
 			contents: "hello, dagger!"
 		}
+		read: core.#ReadFile & {
+			input: mkdir.output
+			path: "bla/hello.txt"
+		}
 		run: bash.#Run & {
 			input: _dockerCLI.output
 			mounts: "source": {
