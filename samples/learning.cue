@@ -18,30 +18,43 @@ dagger.#Plan & {
 	}
 	actions: {
 		_dockerCLI: alpine.#Build & {
-			packages: bash: _
+					packages: {
+						bash: {}
+						go: {}
+					}
 		}
 		mkdir: core.#Mkdir & {
 			input: client.filesystem."./".read.contents
 			path: "bla"
 		}
-		write: core.#WriteFile & {
+		daggerwrite: core.#WriteFile & {
 			input: mkdir.output
 			path: "bla/hello.txt"
 			contents: "hello, dagger!"
 		}
-		read: core.#ReadFile & {
-			input: mkdir.output
-			path: "bla/hello.txt"
-		}
-		run: bash.#Run & {
+		gowrite: bash.#Run & {
 			input: _dockerCLI.output
 			mounts: "source": {
 				dest:     "/"
 				contents: write.output
 			}
 			script: contents: #"""
-				echo 'hello world'
+				go run main.go
 				"""#
+		}
+		bashwrite: bash.#Run & {
+			input: _dockerCLI.output
+			mounts: "source": {
+				dest:     "/"
+				contents: write.output
+			}
+			script: contents: #"""
+				echo 'hello world' > bla/hello.txt
+				"""#
+		}
+		read: core.#ReadFile & {
+			input: mkdir.output
+			path: "bla/hello.txt"
 		}
 	}
 }
