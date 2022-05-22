@@ -12,7 +12,7 @@ dagger.#Plan & {
 		filesystem: {
 			"./": {
 				read: contents: dagger.#FS
-				write: contents: actions.write.output
+				write: contents: actions.daggerwrite.output
 			}
 		}
 	}
@@ -32,11 +32,11 @@ dagger.#Plan & {
 			path: "bla/hello.txt"
 			contents: "hello, dagger!"
 		}
-		gowrite: bash.#Run & {
+		gowrite: core.#Exec & {
 			input: _dockerCLI.output
 			mounts: "source": {
 				dest:     "/"
-				contents: write.output
+				contents: daggerwrite.output
 			}
 			script: contents: #"""
 				go run main.go
@@ -46,7 +46,7 @@ dagger.#Plan & {
 			input: _dockerCLI.output
 			mounts: "source": {
 				dest:     "/"
-				contents: write.output
+				contents: daggerwrite.output
 			}
 			script: contents: #"""
 				echo 'hello world' > bla/hello.txt
