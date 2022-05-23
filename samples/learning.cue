@@ -33,7 +33,7 @@ dagger.#Plan & {
 			contents: "hello, dagger!"
 		}
 		gowrite: core.#Exec & {
-			input: _dockerCLI.output
+			input: client.filesystem."./".read.contents
 			mounts: "source": {
 				dest:     "/"
 				contents: daggerwrite.output
