@@ -34,13 +34,8 @@ dagger.#Plan & {
 		}
 		gowrite: core.#Exec & {
 			input: client.filesystem."./".read.contents
-			mounts: "source": {
-				dest:     "/"
-				contents: daggerwrite.output
-			}
-			script: contents: #"""
-				go run main.go
-				"""#
+			args: ["go", "run", "main.go"]
+			always: true
 		}
 		bashwrite: bash.#Run & {
 			input: _dockerCLI.output
