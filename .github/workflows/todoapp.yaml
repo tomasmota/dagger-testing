@@ -35,7 +35,7 @@ jobs:
         uses: dagger/dagger-for-github@v2
         with:
           workdir: samples
-          cmds: do gowrite
+          cmds: do basicexec
       - name: Read File (dagger)
         uses: dagger/dagger-for-github@v2
         with:

@@ -1,4 +1,4 @@
-package todoapp
+package samples
 
 import (
 	"dagger.io/dagger"
@@ -6,7 +6,13 @@ import (
 )
 
 dagger.#Plan & {
-	client: filesystem: ".": read: contents: dagger.#FS
+	client: {
+		filesystem: {
+			".": read: {
+				contents: dagger.#FS
+			}
+		}
+	}
 	actions: {
 		_ubuntu: core.#Pull & {source: "ubuntu:latest"}
 		src: core.#Copy & {
@@ -17,6 +23,11 @@ dagger.#Plan & {
 		copyexec: core.#Exec & {
 			input: src.output
 			workdir: "/app"
+			args: ["ls"]
+			always: true
+		}
+		basicexec: core.#Exec & {
+			input: _ubuntu.output
 			args: ["ls"]
 			always: true
 		}
