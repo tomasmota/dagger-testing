@@ -14,12 +14,12 @@ dagger.#Plan & {
 				read: contents: dagger.#FS
 			}
 			"out": {
-				write: contents: actions.bashwrite.output
+				write: contents: actions.version.output
 			}
 		}
 	}
 	actions: {
-		_ubuntu: core.#Pull & {source: "ubuntu:latest"}
+		_ubuntu: core.#Pull & {source: "ubuntu"}
 		_dockerCLI: alpine.#Build & {
 					packages: {
 						bash: {}
@@ -35,21 +35,31 @@ dagger.#Plan & {
 			path: "bla/hello.txt"
 			contents: "hello, dagger!"
 		}
-		update: core.#Exec & {
+		daggerread: core.#ReadFile & {
+			input: mkdir.output
+			path: "bla/hello.txt"
+		}
+		install: core.#Exec & {
 			input: _ubuntu.output
-			workdir: "bla"
-			args: ["apt", "update"]
+			args: [
+					"sh", "-c",
+					#"""
+						apt update
+						apt install -y golang-go
+						"""#,
+				]
 			always: true
 		}
-		bashwrite: core.#Exec & {
-			input: _ubuntu.output
-			workdir: "bla"
-			args: ["apt", "search", "golang-go"]
-			always: true
-		}
-		// read: core.#ReadFile & {
-		// 	input: mkdir.output
-		// 	path: "bla/hello.txt"
+		// install: core.#Exec & {
+		// 	input: update.output
+		// 	args: ["apt", "install", "-y", "golang-go"]
+		// 	always: true
 		// }
+		version: core.#Exec & {
+			input: install.output
+			// args: ["/go/bin/go", "version"]
+			args: ["echo", "blaaa"]
+			always: true
+		}
 	}
 }
