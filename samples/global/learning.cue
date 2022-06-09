@@ -47,7 +47,7 @@ dagger.#Plan & {
 						apt update
 						apt install -y golang-go
 						which go
-						/go/bin/go version
+						go version
 						"""#,
 				]
 			always: true
@@ -59,8 +59,8 @@ dagger.#Plan & {
 		// }
 		version: core.#Exec & {
 			input: install.output
-			// args: ["/go/bin/go", "version"]
-			args: ["echo", "blaaa"]
+			args: ["go", "version"]
+			// args: ["echo", "blaaa"]
 			always: true
 		}
 	}
