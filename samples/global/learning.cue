@@ -46,6 +46,8 @@ dagger.#Plan & {
 					#"""
 						apt update
 						apt install -y golang-go
+						which go
+						/go/bin/go version
 						"""#,
 				]
 			always: true

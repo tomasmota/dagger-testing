@@ -34,10 +34,10 @@ jobs:
       - name: Write File
         uses: dagger/dagger-for-github@v2
         with:
-          workdir: samples/exec
-          cmds: do basicexec
-      - name: Read File (dagger)
-        uses: dagger/dagger-for-github@v2
-        with:
           workdir: samples/global
-          cmds: do daggerread
+          cmds: do install
+      # - name: Read File (dagger)
+      #   uses: dagger/dagger-for-github@v2
+      #   with:
+      #     workdir: samples/global
+      #     cmds: do daggerread
