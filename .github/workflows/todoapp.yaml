@@ -45,5 +45,5 @@ jobs:
       - name: go build
         uses: dagger/dagger-for-github@v2
         with:
-          workdir: go/global
+          workdir: go
           cmds: do version
