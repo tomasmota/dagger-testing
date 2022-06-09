@@ -10,7 +10,7 @@ dagger.#Plan & {
 		_go: core.#Pull & {source: "golang"}
 		version: core.#Exec & {
 			input: _go.output
-			args: ["echo", "$PATH"]
+			args: ["/go/bin/go", "version"]
 			always: true
 		}
 	}
