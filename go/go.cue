@@ -15,7 +15,7 @@ dagger.#Plan & {
 		}
 		version: core.#Exec & {
 			input: ls.output
-			args: ["which", "go"]
+			args: ["/usr/local/go/bin/go", "version"]
 			always: true
 		}
 	}
