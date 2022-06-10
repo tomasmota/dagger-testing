@@ -10,7 +10,7 @@ dagger.#Plan & {
 		_go: core.#Pull & {source: "golang:alpine"}
 		ls: core.#Exec & {
 			input: _go.output
-			args: ["ls"]
+			args: ["ls", "/usr/local/go/bin"]
 			always: true
 		}
 		version: core.#Exec & {
