@@ -18,5 +18,11 @@ dagger.#Plan & {
 			args: ["/usr/local/go/bin/go", "version"]
 			always: true
 		}
+		bash: bash.#Run & {
+			input:   version.output
+			script: contents: #"""
+				/usr/local/go/bin/go version
+				"""#
+		}
 	}
 }
