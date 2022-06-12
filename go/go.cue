@@ -22,7 +22,7 @@ dagger.#Plan & {
 			args: [
 					"sh", "-c",
 					#"""
-						echo $PATH
+						PATH=$PATH:~/usr/local/go/bin
 					"""#,
 				]
 			always: true
