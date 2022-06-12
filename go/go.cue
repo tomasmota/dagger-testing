@@ -13,6 +13,7 @@ dagger.#Plan & {
 				include: ["main.go"]
 			}
 		}
+	}
 	actions: {
 		_go: core.#Pull & {source: "golang:alpine"}
 		ls: core.#Exec & {
