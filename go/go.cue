@@ -16,14 +16,14 @@ dagger.#Plan & {
 	}
 	actions: {
 		_go: core.#Pull & {source: "golang:alpine"}
-		ls: core.#Exec & {
+		path: core.#Exec & {
 			input: _go.output
-			args: ["ls", "/usr/local/go/bin"]
+			args: ["PATH=$PATH:~/usr/local/go/bin"]
 			always: true
 		}
 		version: core.#Exec & {
-			input: ls.output
-			args: ["/usr/local/go/bin/go", "version"]
+			input: path.output
+			args: ["go", "version"]
 			always: true
 		}
 		run: core.#Exec & {
@@ -33,7 +33,7 @@ dagger.#Plan & {
 				contents: client.filesystem.".".read.contents
 			}
 			workdir: "/code"
-			args: ["/usr/local/go/bin/go", "run", "main.go"]
+			args: ["go", "run", "main.go"]
 		}
 	}
 }
