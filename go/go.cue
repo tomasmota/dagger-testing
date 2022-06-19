@@ -22,18 +22,7 @@ dagger.#Plan & {
 			args: [
 					"sh", "-c",
 					#"""
-						PATH=$PATH:~/usr/local/go/bin
-					"""#,
-				]
-			always: true
-		}
-		getpath: core.#Exec & {
-			input: setpath.output
-			// args: ["PATH=$PATH:~/usr/local/go/bin"]
-			args: [
-					"sh", "-c",
-					#"""
-						echo $PATH
+						cp /usr/local/go/bin /usr/local/bin/go
 					"""#,
 				]
 			always: true
