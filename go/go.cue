@@ -22,7 +22,7 @@ dagger.#Plan & {
 			args: [
 					"sh", "-c",
 					#"""
-						cp /usr/local/go/bin /usr/local/bin/go
+						cp /usr/local/go/bin/go /usr/local/bin/go
 					"""#,
 				]
 			always: true
