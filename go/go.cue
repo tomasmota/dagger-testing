@@ -16,7 +16,7 @@ dagger.#Plan & {
 	}
 	actions: {
 		_go: core.#Pull & {source: "golang:alpine"}
-		path: core.#Exec & {
+		setpath: core.#Exec & {
 			input: _go.output
 			// args: ["PATH=$PATH:~/usr/local/go/bin"]
 			args: [
@@ -27,8 +27,19 @@ dagger.#Plan & {
 				]
 			always: true
 		}
+		getpath: core.#Exec & {
+			input: setpath.output
+			// args: ["PATH=$PATH:~/usr/local/go/bin"]
+			args: [
+					"sh", "-c",
+					#"""
+						echo $PATH
+					"""#,
+				]
+			always: true
+		}
 		version: core.#Exec & {
-			input: path.output
+			input: getpath.output
 			args: ["go", "version"]
 			always: true
 		}
