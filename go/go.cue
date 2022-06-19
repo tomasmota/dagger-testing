@@ -28,7 +28,7 @@ dagger.#Plan & {
 			always: true
 		}
 		version: core.#Exec & {
-			input: path.output
+			input: setpath.output
 			args: ["go", "version"]
 			always: true
 		}
