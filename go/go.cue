@@ -32,14 +32,28 @@ dagger.#Plan & {
 			args: ["go", "version"]
 			always: true
 		}
-		run: core.#Exec & {
+		build: core.#Exec & {
 			input: version.output
 			mounts: code: {
 				dest:     "/code"
 				contents: client.filesystem.".".read.contents
 			}
 			workdir: "/code"
-			args: ["go", "run", "main.go"]
+			args: [
+					"sh", "-c",
+					#"""
+						go mod init hello
+						go mod tidy
+						go build -o out
+						./out
+					"""#,
+				]
+			always: true
+		}
+		run: core.#Exec & {
+			input: build.output
+			args: ["./out"]
+			always: true
 		}
 	}
 }
