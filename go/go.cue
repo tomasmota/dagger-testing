@@ -45,13 +45,13 @@ dagger.#Plan & {
 						go mod init hello
 						go mod tidy
 						go build -o out
-						./out
 					"""#,
 				]
 			always: true
 		}
 		run: core.#Exec & {
 			input: build.output
+			workdir: "/code"
 			args: ["./out"]
 			always: true
 		}
