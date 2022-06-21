@@ -12,13 +12,18 @@ dagger.#Plan & {
 				contents: dagger.#FS
 				include: ["main.go"]
 			}
+			"out": {
+				write: {
+					contents: actions.run.output
+					// include: [ "hello" ]
+				}	
+			}
 		}
 	}
 	actions: {
 		_go: core.#Pull & {source: "golang:alpine"}
 		setpath: core.#Exec & {
 			input: _go.output
-			// args: ["PATH=$PATH:~/usr/local/go/bin"]
 			args: [
 					"sh", "-c",
 					#"""
@@ -44,15 +49,15 @@ dagger.#Plan & {
 					#"""
 						go mod init hello
 						go mod tidy
-						go build -o out
+						go build -o hello
+						cp ./hello /hello
 					"""#,
 				]
 			always: true
 		}
 		run: core.#Exec & {
 			input: build.output
-			workdir: "/code"
-			args: ["./out"]
+			args: ["/hello"]
 			always: true
 		}
 	}
