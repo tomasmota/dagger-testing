@@ -47,3 +47,5 @@ jobs:
         with:
           workdir: go
           cmds: do buildResult
+      - name: Run go app
+        run: './go/hello'
