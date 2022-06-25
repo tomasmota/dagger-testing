@@ -12,10 +12,9 @@ dagger.#Plan & {
 				contents: dagger.#FS
 				include: ["main.go"]
 			}
-			"out": {
+			".": {
 				write: {
-					contents: actions.run.output
-					// include: [ "hello" ]
+					contents: actions.buildResult.output
 				}	
 			}
 		}
@@ -49,15 +48,18 @@ dagger.#Plan & {
 					#"""
 						go mod init hello
 						go mod tidy
-						go build -o hello
-						cp ./hello /hello
+						go build -o /hello/hello
 					"""#,
 				]
 			always: true
 		}
+		buildResult: core.#Subdir & {
+				input: build.output
+				path:  "/hello" 
+		}
 		run: core.#Exec & {
 			input: build.output
-			args: ["/hello"]
+			args: ["/hello/hello"]
 			always: true
 		}
 	}
