@@ -1,4 +1,4 @@
-name: todoapp
+name: go
 
 on:
   push:

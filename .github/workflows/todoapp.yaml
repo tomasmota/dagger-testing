@@ -1,32 +1,34 @@
-# name: todoapp
+name: todoapp
 
-# on:
-#   push:
-#     branches:
-#       - '**'
+on:
+  push:
+    branches:
+      - '**'
+    paths:
+      - "todoapp"
 
-# env:
-#   APP_NAME: todoapp-dagger-tomas
-#   NETLIFY_TEAM: tomas-mota
-#   NETLIFY_TOKEN: ${{ secrets.NETLIFY_TOKEN }}
-#   DAGGER_LOG_FORMAT: plain
+env:
+  APP_NAME: todoapp-dagger-tomas
+  NETLIFY_TEAM: tomas-mota
+  NETLIFY_TOKEN: ${{ secrets.NETLIFY_TOKEN }}
+  DAGGER_LOG_FORMAT: plain
 
-# jobs:
-  # todoapp:
+jobs:
+  todoapp:
     
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #     - name: Clone repository
-  #       uses: actions/checkout@v2
+    runs-on: ubuntu-latest
+    steps:
+      - name: Clone repository
+        uses: actions/checkout@v2
 
-  #     - name: Deploy to Netlify
-  #       uses: dagger/dagger-for-github@v2
-  #       # See all options at https://github.com/dagger/dagger-for-github
-  #       with:
-  #         workdir: todoapp
-  #         cmds: do deploy
-  #     - name: Print App Url
-  #       run: 'echo https://${{env.APP_NAME}}.netlify.app'
+      - name: Deploy to Netlify
+        uses: dagger/dagger-for-github@v2
+        # See all options at https://github.com/dagger/dagger-for-github
+        with:
+          workdir: todoapp
+          cmds: do deploy
+      - name: Print App Url
+        run: 'echo https://${{env.APP_NAME}}.netlify.app'
   # samplewrite:
   #   runs-on: ubuntu-latest
   #   steps:
@@ -37,15 +39,3 @@
   #       with:
   #         workdir: samples/global
   #         cmds: do version
-  # go:
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #     - name: Clone repository
-  #       uses: actions/checkout@v2
-  #     - name: go build
-  #       uses: dagger/dagger-for-github@v2
-  #       with:
-  #         workdir: go
-  #         cmds: do buildResult
-  #     - name: Run go app
-  #       run: './go/hello'
