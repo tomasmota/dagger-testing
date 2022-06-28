@@ -9,7 +9,7 @@ env:
   DAGGER_LOG_FORMAT: plain
 
 jobs:
-  go:
+  dotnet:
     runs-on: ubuntu-latest
     steps:
       - name: Clone repository
@@ -20,4 +20,4 @@ jobs:
           workdir: dotnet
           cmds: do buildResult
       - name: Run dotnet app
-        run: './out/dotnet'
+        run: './dotnet/out/dotnet'
