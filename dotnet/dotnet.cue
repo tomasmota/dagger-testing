@@ -12,7 +12,7 @@ dagger.#Plan & {
 				contents: dagger.#FS
 				exclude: ["obj", "bin"]
 			}
-			".": {
+			"./out": {
 				write: {
 					contents: actions.buildResult.output
 				}	
