@@ -60,7 +60,7 @@ import (
 	}
 
 	// Complete ref of the pushed image, including digest
-	result: #Ref @dagger(generated)
+	result: #Ref
 }
 
 // Download a container image from a remote repository
@@ -76,17 +76,14 @@ import (
 		secret:   dagger.#Secret
 	}
 
-	// When to pull the image
-	resolveMode: *"default" | "forcePull" | "preferLocal"
-
 	// Root filesystem of downloaded image
-	output: dagger.#FS @dagger(generated)
+	output: dagger.#FS
 
 	// Image digest
-	digest: string @dagger(generated)
+	digest: string
 
 	// Downloaded container image config
-	config: #ImageConfig @dagger(generated)
+	config: #ImageConfig
 }
 
 // Build a container image using a Dockerfile
@@ -115,10 +112,10 @@ import (
 	hosts?: [string]:    string
 
 	// Root filesystem produced
-	output: dagger.#FS @dagger(generated)
+	output: dagger.#FS
 
 	// Container image config produced
-	config: #ImageConfig @dagger(generated)
+	config: #ImageConfig
 }
 
 // Export an image as a tar archive
@@ -141,10 +138,10 @@ import (
 	path: string | *"/image.tar"
 
 	// Exported image ID
-	imageID: string @dagger(generated)
+	imageID: string
 
 	// Root filesystem with exported file
-	output: dagger.#FS @dagger(generated)
+	output: dagger.#FS
 }
 
 // Change image config

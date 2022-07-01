@@ -10,6 +10,11 @@ package dagger
 	$dagger: fs: _id: string | null
 }
 
+// An empty directory
+#Scratch: #FS & {
+	$dagger: fs: _id: null
+}
+
 // A reference to an external secret, for example:
 //  - A password
 //  - A SSH private key
@@ -25,5 +30,9 @@ package dagger
 //  - A TCP or UDP port
 //  - A Windows named pipe
 #Socket: {
-	$dagger: socket: _id: string
+	$dagger: service: _id: string
 }
+
+// A network service address
+#Address: string & =~"^(unix://|npipe://).+"
+// TODO: #Address: string & =~"^(tcp://|unix://|npipe://|udp://).+"

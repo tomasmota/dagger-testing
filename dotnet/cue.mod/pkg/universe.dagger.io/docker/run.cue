@@ -12,7 +12,7 @@ import (
 	// Docker image to execute
 	input: #Image
 
-	always?: bool
+	always: bool | *false
 
 	// Filesystem mounts
 	mounts: [name=string]: core.#Mount
@@ -62,12 +62,12 @@ import (
 
 	// Working directory for the command
 	// Example: "/src"
-	workdir?: string
+	workdir: string
 
 	// Username or UID to ad
 	// User identity for this command
 	// Examples: "root", "0", "1002"
-	user?: string
+	user: string
 
 	// Add defaults to image config
 	// This ensures these values are present
@@ -150,22 +150,6 @@ import (
 			for path, output in _directories {
 				directories: "\(path)": output.contents
 			}
-
-			secrets: [path=string]: dagger.#Secret
-			_secrets: {
-				for path, _ in secrets {
-					"\(path)": {
-						contents: dagger.#Secret & _read.output
-						_read:    core.#NewSecret & {
-							input:  _exec.output
-							"path": path
-						}
-					}
-				}
-			}
-			for path, output in _secrets {
-				secrets: "\(path)": output.contents
-			}
 		}
 	}
 
@@ -177,10 +161,8 @@ import (
 
 	// Actually execute the command
 	_exec: core.#Exec & {
-		"input": input.rootfs
-		if always != _|_ {
-			"always": always
-		}
+		"input":  input.rootfs
+		"always": always
 		"mounts": mounts
 		args:     _config.output.entrypoint + _config.output.cmd
 		workdir:  _config.output.workdir

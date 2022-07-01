@@ -3,6 +3,7 @@ package dotnet
 import (
 	"dagger.io/dagger"
 	"dagger.io/dagger/core"
+    "universe.dagger.io/docker"
 )
 
 dagger.#Plan & {
@@ -49,6 +50,26 @@ dagger.#Plan & {
 		buildResult: core.#Subdir & {
 				input: build.output
 				path:  "/out" 
+		}
+		dockerBuild: docker.#Dockerfile & {
+			source: client.filesystem."./app".read.contents
+			dockerfile: contents: """
+				FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build-env
+				WORKDIR /app
+
+				# Copy everything
+				COPY . ./
+				# Restore as distinct layers
+				RUN dotnet restore
+				# Build and publish a release
+				RUN dotnet publish --runtime alpine-x64 -c Release -o out
+
+				# Build runtime image
+				FROM mcr.microsoft.com/dotnet/runtime-deps:6.0-alpine
+				WORKDIR /app
+				COPY --from=build-env /app/out .
+				ENTRYPOINT ["./dotnet"]
+				"""
 		}
 	}
 }

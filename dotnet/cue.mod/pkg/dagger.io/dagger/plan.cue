@@ -9,24 +9,23 @@ package dagger
 		filesystem: [path=string]: {
 			// Read data from that path
 			read?: _#clientFilesystemRead & {
-				"path": string | *path
+				"path": path
 			}
 
 			// If set, Write to that path
 			write?: _#clientFilesystemWrite & {
-				"path": string | *path
+				"path": path
 
-				// if we read and write to the same path, under the same key,
-				// assume we want to make an update
-				if (read.path & write.path) != _|_ {
+				// avoid race condition
+				if read != _|_ {
 					_after: read
 				}
 			}
 		}
 
 		// Access client network endpoints
-		network: [address=string]: _#clientNetwork & {
-			"address": _#address | *address
+		network: [address=#Address]: _#clientNetwork & {
+			"address": address
 		}
 
 		// Access client environment variables
@@ -44,7 +43,9 @@ package dagger
 	// platform?: string
 
 	// Execute actions in containers
-	actions: _
+	actions: {
+		...
+	}
 }
 
 _#clientFilesystemRead: {
@@ -57,14 +58,11 @@ _#clientFilesystemRead: {
 		// CUE type defines expected content:
 		//     string: contents of a regular file
 		//     #Secret: secure reference to the file contents
-		contents: {
-			@dagger(generated)
-			string | #Secret
-		}
+		contents: string | #Secret
 	} | {
 		// CUE type defines expected content:
 		//     #FS: contents of a directory
-		contents: #FS @dagger(generated)
+		contents: #FS
 
 		// Filename patterns to include
 		// Example: ["*.go", "Dockerfile"]
@@ -81,7 +79,6 @@ _#clientFilesystemWrite: {
 
 	// Path may be absolute, or relative to client working directory
 	path: string
-
 	{
 		// File contents to export (as a string or secret)
 		contents: string | #Secret
@@ -100,28 +97,22 @@ _#clientNetwork: {
 
 	// URL to the socket
 	// Example: unix:///var/run/docker.sock
-	address: _#address
+	address: #Address
 
 	{
 		// unix socket or npipe
-		connect: #Socket @dagger(generated)
+		connect: #Socket
 		// } | {
 		//  // FIXME: not yet implemented
 		//  listen: #Socket
 	}
 }
 
-// A network socket address
-_#address: string & =~"^(unix://|npipe://).+"
-
 _#clientEnv: {
 	$dagger: task: _name: "ClientEnv"
 
 	// CUE type defines expected content
-	[!~"\\$dagger"]: {
-		@dagger(generated)
-		*string | #Secret
-	}
+	[!~"\\$dagger"]: *string | #Secret
 }
 
 _#clientCommand: {
@@ -144,29 +135,20 @@ _#clientCommand: {
 	env: [string]: string | #Secret
 
 	// Capture standard output (as a string or secret)
-	stdout?: {
-		@dagger(generated)
-		*string | #Secret
-	}
+	stdout?: *string | #Secret
 
 	// Capture standard error (as a string or secret)
-	stderr?: {
-		@dagger(generated)
-		*string | #Secret
-	}
+	stderr?: *string | #Secret
 
 	// Inject standard input (from a string or secret)
-	stdin?: {
-		@dagger(generated)
-		string | #Secret
-	}
+	stdin?: string | #Secret
 }
 
 _#clientPlatform: {
 	$dagger: task: _name: "ClientPlatform"
 
 	// Operating system of the client machine
-	os: string @dagger(generated)
+	os: string
 	// Hardware architecture of the client machine
-	arch: string @dagger(generated)
+	arch: string
 }

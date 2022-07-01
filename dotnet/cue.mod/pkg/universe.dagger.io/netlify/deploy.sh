@@ -6,7 +6,12 @@ NETLIFY_AUTH_TOKEN="$(cat /run/secrets/token)"
 export NETLIFY_AUTH_TOKEN
 
 create_site() {
-	netlify api createSite -d "{ \"body\": {\"name\": \"${NETLIFY_SITE_NAME}\", \"custom_domain\": \"${NETLIFY_DOMAIN}\"} }" > body
+	url="https://api.netlify.com/api/v1/${NETLIFY_ACCOUNT:-}/sites"
+
+	curl -s -S --fail-with-body -H "Authorization: Bearer $NETLIFY_AUTH_TOKEN" \
+		-X POST -H "Content-Type: application/json" \
+		"$url" \
+		-d "{\"name\": \"${NETLIFY_SITE_NAME}\", \"custom_domain\": \"${NETLIFY_DOMAIN}\"}" -o body
 
 	# shellcheck disable=SC2181
 	if [ $? -ne 0 ]; then
@@ -18,7 +23,11 @@ create_site() {
 	jq -r '.site_id' body
 }
 
-site_id=$(netlify api listSites | jq -r ".[] | select(.name==\"${NETLIFY_SITE_NAME}\") | .id")
+site_id=$(
+	curl -s -S -f -H "Authorization: Bearer $NETLIFY_AUTH_TOKEN" \
+		"https://api.netlify.com/api/v1/sites?filter=all" |
+		jq -r ".[] | select(.name==\"$NETLIFY_SITE_NAME\") | .id"
+)
 if [ -z "$site_id" ]; then
 	if [ "${NETLIFY_SITE_CREATE:-}" != 1 ]; then
 		echo "Site $NETLIFY_SITE_NAME does not exist"

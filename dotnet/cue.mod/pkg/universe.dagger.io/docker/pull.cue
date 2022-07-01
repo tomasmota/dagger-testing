@@ -11,9 +11,6 @@ import (
 	// Source ref.
 	source: #Ref
 
-	// When to pull the image
-	resolveMode: *"default" | "forcePull" | "preferLocal"
-
 	// Registry authentication
 	auth?: {
 		username: string
@@ -21,8 +18,7 @@ import (
 	}
 
 	_op: core.#Pull & {
-		"source":      source
-		"resolveMode": resolveMode
+		"source": source
 		if auth != _|_ {
 			"auth": auth
 		}

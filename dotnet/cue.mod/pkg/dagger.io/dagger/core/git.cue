@@ -28,5 +28,5 @@ import "dagger.io/dagger"
 	} | {
 		authHeader: dagger.#Secret
 	}
-	output: dagger.#FS @dagger(generated)
+	output: dagger.#FS
 }

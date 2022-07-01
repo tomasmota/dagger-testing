@@ -44,8 +44,8 @@ dagger.#Plan & {
 				}
 
 				export: files: {
-					"/jq-version.txt":   =~"^jq"
-					"/curl-version.txt": =~"^curl"
+					"/jq-version.txt": contents:   =~"^jq"
+					"/curl-version.txt": contents: =~"^curl"
 				}
 			}
 		}
