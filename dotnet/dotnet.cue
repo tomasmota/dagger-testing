@@ -8,6 +8,9 @@ import (
 
 dagger.#Plan & {
 	client: {
+		env: {
+			REGISTRY_PASS: dagger.#Secret
+		}
 		filesystem: {
 			"./app": read: {
 				contents: dagger.#FS
@@ -70,6 +73,14 @@ dagger.#Plan & {
 				COPY --from=build-env /app/out .
 				ENTRYPOINT ["./dotnet"]
 				"""
+		}
+		push: docker.#Push & {
+			image: dockerBuild.output
+			dest:  "registry.hub.docker.com/tomasmota/dotnet-dagger"
+			auth: {
+                username: "tomasmota"
+                secret:   client.env.REGISTRY_PASS
+            }
 		}
 	}
 }
