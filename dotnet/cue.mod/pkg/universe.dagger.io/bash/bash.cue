@@ -6,6 +6,7 @@ import (
 	"dagger.io/dagger/core"
 
 	"universe.dagger.io/docker"
+	"list"
 )
 
 // Run a bash script in a Docker container
@@ -37,14 +38,29 @@ import (
 
 	// Arguments to the script
 	args: [...string]
+	flags: [string]: string | bool
+
+	_flatFlags: list.FlattenN([
+			for k, v in flags {
+			if (v & bool) != _|_ {
+				[k]
+			}
+			if (v & string) != _|_ {
+				[k, v]
+			}
+		},
+	], 1)
 
 	// Where in the container to mount the scripts directory
 	_mountpoint: "/bash/scripts"
 
 	docker.#Run & {
+		// ignore entrypoint from image config as it can
+		// create issues if it's not exec'ing to "$@"
+		entrypoint: []
 		command: {
 			name:   "bash"
-			"args": ["\(_mountpoint)/\(script._filename)"] + args
+			"args": ["\(_mountpoint)/\(script._filename)"] + args + _flatFlags
 			// FIXME: make default flags overrideable
 			flags: {
 				"--norc": true
